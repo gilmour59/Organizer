@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('/', 'SearchController@index');
+
+Route::get('/search', 'SearchController@action')->name('search.action');
