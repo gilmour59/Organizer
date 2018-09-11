@@ -9,12 +9,9 @@
             Search
         </div>
         <div class="card-body">
-            <form method="POST" action="">
-                @csrf
-                <div class="form-group">
-                    <input id="search" name="search" class="form-control offset-3 col-sm-6" type="text">
-                </div>
-            </form>
+            <div class="form-group">
+                <input id="search" name="search" class="form-control offset-3 col-sm-6" type="text" placeholder="Search Here">
+            </div>
         </div>
     </div>
 @endsection
