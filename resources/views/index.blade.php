@@ -31,9 +31,14 @@
 
     <script>
         $(document).ready(function(){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             
             fetch_data();
-
             function fetch_data(query = ''){
                 $.ajax({
                     url: "{{ route('search.action') }}",
@@ -49,11 +54,11 @@
                 })
             }
             
-            $.(document).on('keyup', '#search', function(){
+            $(document).on('keyup', '#search', function(){
 
                 var query = $(this).val();
                 fetch_data(query);
-            })
+            });
         });
     </script>
 @endsection

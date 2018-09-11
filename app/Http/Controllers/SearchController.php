@@ -15,12 +15,12 @@ class SearchController extends Controller
     public function action(Request $request){
 
         if($request->ajax()){
+            $output = "";
             $query = $request->get('query');
             if($query != ''){
-                $data = Ingoing::where('subject', 'like', '%' . $query . '%')
-                ->orWhere('id', 'like', '%' . $query . '%')->orderBy('created_at', 'desc')->get();
+                $data = Ingoing::where('subject', 'like', '%' . $query . '%')->orWhere('id', 'like', '%' . $query . '%')->orderBy('created_at', 'desc')->get();
             }else{
-                $data = Ingoing::orderby('created_at', 'desc')->get();
+                $data = Ingoing::orderBy('id', 'desc')->get();
             }
             $total_row = $data->count();
             if($total_row > 0){
