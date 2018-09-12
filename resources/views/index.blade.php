@@ -59,21 +59,40 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <form method="POST" action="" enctype="multipart/form-data">
+                        <form id="addFileForm" method="POST" action="" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                    <label class="control-label" for="dateReceived">Date Received:</label>
-                                    <input class="form-control" type="date" name="dateReceived" id="dateReceived">
-                                </div>
-                            <div class="form-group">
-                                <label class="control-label" for="subject">Subject:</label>
-                                <textarea name="subject" class="form-control" id="subject" cols="5" rows="3"></textarea>
+                                <label for="addLetter">Select Type of Letter:</label>
+                                <select class="form-control" id="addLetter" name="addLetter">
+                                    <option value="0">Ingoing</option>
+                                    <option value="1">Outgoing</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="fileUpload">Upload File: </label>
+                                <label class="control-label" for="addDate">Date Received:</label>
+                                <input class="form-control" type="date" name="addDate" id="addDate">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="addTo">To:</label>
+                                <input class="form-control" type="text" name="addTo" id="addTo">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="addFrom">From:</label>
+                                <input class="form-control" type="text" name="addFrom" id="addFrom">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="addName">Name:</label>
+                                <input class="form-control" type="text" name="addName" id="addName">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="addSubject">Subject:</label>
+                                <textarea name="addSubject" class="form-control" id="addSubject" cols="5" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="addFileUpload">Upload File: </label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="fileUpload" name="fileUpload">
-                                    <label class="custom-file-label form-control-file" for="fileUpload">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="addFileUpload" name="addFileUpload">
+                                    <label class="custom-file-label form-control-file" for="addFileUpload">Choose file</label>
                                 </div>
                             </div>
                         </form>
@@ -81,7 +100,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" form="addFileForm" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

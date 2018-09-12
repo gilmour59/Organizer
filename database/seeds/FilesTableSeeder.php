@@ -11,6 +11,6 @@ class FilesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\ogmInOutFile::class, 7)->create();
+        factory(App\ogmInOutFile::class, 20)->create();
     }
 }

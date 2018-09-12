@@ -25,22 +25,38 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = new ogmInOutFile();
-        $data->subject = 'Test99';
-        $data->save();
-        dd($data->id);
+        $this->validate($request, [
+            'addDate' => 'required',
+            'addSubject' => 'required',
+            'addFileUpload' => 'file|required'
+        ]);
 
+        //Create new Data 
+        $data = new ogmInOutFile();
+        $data->date = $request->input('addDate');
+        $data->to = $request->input('addTo');
+        $data->from = $request->input('addFrom');
+        $data->name = $request->input('addName');
+        $data->letter = $request->input('addLetter');
+        $data->save();
+ 
         //Handle File Upload
-        if ($request->hasFile('fileUpload')) {
+        if ($request->hasFile('addFileUpload')) {
             //get File Name
-            $fileNameWithExtension = $request->file('fileUpload')->getClientOriginalName();
+            $fileNameWithExtension = $request->file('addFileUpload')->getClientOriginalName();
             $fileNameToStore = $data->id . '.' . $fileNameWithExtension;
             //Upload Image (Store to a folder)
             //add if else for ingoing and out going
-            $path = $request->file('fileUpload')->storeAs('public/ingoing_pdf', $fileNameToStore);
+            $path = $request->file('addFileUpload')->storeAs('public/ingoing', $fileNameToStore);
         }else{
             $fileNameToStore = null;
         }
+        
+        $data->file = $fileNameToStore;
+        $data->save();
+
+        //Redirecting With Flashed Session Data
+        return redirect('/')->with('success', 'Post Added!'); 
     }
 
     /**

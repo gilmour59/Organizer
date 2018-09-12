@@ -18,11 +18,14 @@ class SearchController extends Controller
             $output = "";
             $query = $request->get('query');
             if($query != ''){
-                $data = ogmInOutFile::where('subject', 'like', '%' . $query . '%')->orWhere('id', 'like', '%' . $query . '%')->orderBy('created_at', 'desc')->get();
+                $data = ogmInOutFile::where('subject', 'like', '%' . $query . '%')
+                ->orWhere('id', 'like', '%' . $query . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
             }else{
-                $data = ogmInOutFile::orderBy('id', 'desc')->get();
+                $data = ogmInOutFile::orderBy('id', 'desc')->paginate(10);
             }
-            $total_row = $data->count();
+            $total_row = $data->total();
             if($total_row > 0){
                 foreach($data as $row){
                     $output .= '<tr>
@@ -47,6 +50,7 @@ class SearchController extends Controller
             $data = array(
                 'table_data' => $output,
                 'total_data' => $total_row
+                //ADD LINK VARIABLE HERE AND TEST
             );
 
             echo json_encode($data);
