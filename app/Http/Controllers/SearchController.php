@@ -28,14 +28,16 @@ class SearchController extends Controller
                     $output .= '<tr>
                         <td>' . $row->id . '</td>
                         <td style="text-align:left">' . $row->subject . '</td>
-                        <td> <a href="" class="btn btn-success">View</a> </td>
+                        <td> <a href=" '. route('search.view') .'" target="_blank" class="btn btn-success">View</a> </td>
                         <td> <a href="" class="btn btn-primary">Download</a> </td>
+                        <td> <a href="" class="btn btn-info">Edit</a> </td>
+                        <td> <a href="" class="btn btn-danger">X</a> </td>
                     </tr>';
                 }
             }else{
                 $output = '
                 <tr>
-                    <td align="center" colspan="4">No Data Found</td>
+                    <td align="center" colspan="6">No Data Found</td>
                 </tr>';
             }
             $data = array(
@@ -45,5 +47,10 @@ class SearchController extends Controller
 
             echo json_encode($data);
         }        
+    }
+
+    public function view($id = ''){
+
+        return response()->file('C:\Users\Gil\Pictures\level3helmet.jpg');
     }
 }

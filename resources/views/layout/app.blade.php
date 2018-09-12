@@ -19,9 +19,9 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <style>
             * {
-                color: black;
                 font-family: 'Raleway', sans-serif !important;
                 font-weight: 400 !important;
             }

@@ -4,7 +4,7 @@
     <div class="text-center py-4">
         <h2>Organizer Test</h2>
     </div>
-    <div class="card mx-auto" style="width: 900px;">
+    <div class="card mx-auto" style="width: 1000px;">
         <div class="card-header font-weight-bold">
             Search
         </div>
@@ -30,6 +30,8 @@
                             <th width="5%">No.</th>
                             <th width="65%">Subject</th>
                             <th width="7%"></th>
+                            <th width="10%"></th>
+                            <th width="10%"></th>
                             <th width="10%"></th>
                         </tr>
                     </thead>

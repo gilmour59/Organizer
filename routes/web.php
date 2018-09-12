@@ -11,6 +11,13 @@
 |
 */
 
+Route::get('/test', function () {
+    return response()->file('C:\Users\Gil\Pictures\level3helmet.jpg');
+})->name('test');
+
+
 Route::get('/', 'SearchController@index');
 
 Route::get('/search', 'SearchController@action')->name('search.action');
+
+Route::get('/view', 'SearchController@view')->name('search.view');
