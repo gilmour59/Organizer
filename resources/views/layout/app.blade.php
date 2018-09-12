@@ -21,15 +21,17 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <style>
             * {
-                background-color: #fff;
                 color: black;
                 font-family: 'Raleway', sans-serif !important;
                 font-weight: 400 !important;
             }
+            body{
+                background-color: white;
+            }
         </style>
     </head>
     <body>
-        <div class="container">
+        <div id="mainContainer" class="container p-0">
             @yield('content')
         </div>
     </body>

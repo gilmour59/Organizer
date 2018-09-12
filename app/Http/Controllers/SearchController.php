@@ -27,13 +27,15 @@ class SearchController extends Controller
                 foreach($data as $row){
                     $output .= '<tr>
                         <td>' . $row->id . '</td>
-                        <td>' . $row->subject . '</td>
+                        <td style="text-align:left">' . $row->subject . '</td>
+                        <td> <a href="" class="btn btn-success">View</a> </td>
+                        <td> <a href="" class="btn btn-primary">Download</a> </td>
                     </tr>';
                 }
             }else{
                 $output = '
                 <tr>
-                    <td align="center" colspan="2">No Data Found</td>
+                    <td align="center" colspan="4">No Data Found</td>
                 </tr>';
             }
             $data = array(
