@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <style>
             * {
-                font-family: 'Raleway', sans-serif !important;
+                font-family: 'Nunito', sans-serif !important;
                 font-weight: 400 !important;
             }
             body{

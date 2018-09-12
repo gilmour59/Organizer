@@ -4,7 +4,7 @@
     <div class="text-center py-4">
         <h2>Organizer Test</h2>
     </div>
-    <div class="card mx-auto" style="width: 1000px;">
+    <div class="card mx-auto" style="width: 1150px;">
         <div class="card-header font-weight-bold">
             Search
         </div>
@@ -18,21 +18,25 @@
                     </div>
                     <div class="col-sm-6 pb-1"  style="text-align:right;">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIngoing">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFile">
                             Add
                         </button>
                     </div>
                 </div>
-            <div class="table-responsive">
+            <div class="table-responsive" style="font-size:14px">
                 <table class="table table-striped table-bordered text-center">
                     <thead>
                         <tr>
-                            <th width="5%">No.</th>
-                            <th width="65%">Subject</th>
-                            <th width="7%"></th>
-                            <th width="10%"></th>
-                            <th width="10%"></th>
-                            <th width="10%"></th>
+                            <th width="1%">No.</th>
+                            <th width="15%">Date</th>
+                            <th width="15%">To</th>
+                            <th width="15%">From</th>
+                            <th width="15%">Name</th>
+                            <th width="30%">Subject</th>
+                            <th width="1%"></th>
+                            <th width="1%"></th>
+                            <th width="1%"></th>
+                            <th width="1%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,11 +48,11 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addIngoing" tabindex="-1" role="dialog" aria-labelledby="IngoingTitle" aria-hidden="true">
+    <div class="modal fade" id="addFile" tabindex="-1" role="dialog" aria-labelledby="FileTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add File</h5>
+                    <h5 class="modal-title" id="FileTitle">Add File</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -66,10 +70,10 @@
                                 <textarea name="subject" class="form-control" id="subject" cols="5" rows="3"></textarea>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="image">Upload File: </label>
+                                <label class="control-label" for="fileUpload">Upload File: </label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="ingoingFile" name="ingoingFile">
-                                    <label class="custom-file-label form-control-file" for="ingoingFile">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="fileUpload" name="fileUpload">
+                                    <label class="custom-file-label form-control-file" for="fileUpload">Choose file</label>
                                 </div>
                             </div>
                         </form>

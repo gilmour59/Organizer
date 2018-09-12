@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\ogmInOutFile;
 
 class PostsController extends Controller
 {
@@ -24,7 +25,22 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new ogmInOutFile();
+        $data->subject = 'Test99';
+        $data->save();
+        dd($data->id);
+
+        //Handle File Upload
+        if ($request->hasFile('fileUpload')) {
+            //get File Name
+            $fileNameWithExtension = $request->file('fileUpload')->getClientOriginalName();
+            $fileNameToStore = $data->id . '.' . $fileNameWithExtension;
+            //Upload Image (Store to a folder)
+            //add if else for ingoing and out going
+            $path = $request->file('fileUpload')->storeAs('public/ingoing_pdf', $fileNameToStore);
+        }else{
+            $fileNameToStore = null;
+        }
     }
 
     /**
@@ -58,7 +74,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**

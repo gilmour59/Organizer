@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Ingoing;
+use App\ogmInOutFile;
 
 class SearchController extends Controller
 {
@@ -18,26 +18,30 @@ class SearchController extends Controller
             $output = "";
             $query = $request->get('query');
             if($query != ''){
-                $data = Ingoing::where('subject', 'like', '%' . $query . '%')->orWhere('id', 'like', '%' . $query . '%')->orderBy('created_at', 'desc')->get();
+                $data = ogmInOutFile::where('subject', 'like', '%' . $query . '%')->orWhere('id', 'like', '%' . $query . '%')->orderBy('created_at', 'desc')->get();
             }else{
-                $data = Ingoing::orderBy('id', 'desc')->get();
+                $data = ogmInOutFile::orderBy('id', 'desc')->get();
             }
             $total_row = $data->count();
             if($total_row > 0){
                 foreach($data as $row){
                     $output .= '<tr>
-                        <td>' . $row->id . '</td>
+                        <td class="align-middle">' . $row->id . '</td>
+                        <td class="align-middle">' . $row->date . '</td>
+                        <td class="align-middle">' . $row->to . '</td>
+                        <td class="align-middle">' . $row->from . '</td>
+                        <td class="align-middle">' . $row->name . '</td>
                         <td style="text-align:left">' . $row->subject . '</td>
-                        <td> <a href=" '. route('search.view') .'" target="_blank" class="btn btn-success">View</a> </td>
-                        <td> <a href="" class="btn btn-primary">Download</a> </td>
-                        <td> <a href="" class="btn btn-info">Edit</a> </td>
-                        <td> <a href="" class="btn btn-danger">X</a> </td>
+                        <td class="align-middle"> <a style="font-size:12px" href=" '. route('search.view') .'" target="_blank" class="btn btn-success">View</a> </td>
+                        <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-primary">Download</a> </td>
+                        <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-info">Edit</a> </td>
+                        <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-danger">X</a> </td>
                     </tr>';
                 }
             }else{
                 $output = '
                 <tr>
-                    <td align="center" colspan="6">No Data Found</td>
+                    <td align="center" colspan="10">No Data Found</td>
                 </tr>';
             }
             $data = array(

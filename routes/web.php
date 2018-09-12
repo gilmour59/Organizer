@@ -21,3 +21,5 @@ Route::get('/', 'SearchController@index');
 Route::get('/search', 'SearchController@action')->name('search.action');
 
 Route::get('/view', 'SearchController@view')->name('search.view');
+
+Route::get('/file', 'PostsController@store');

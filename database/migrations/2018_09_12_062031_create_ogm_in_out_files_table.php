@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIngoingsTable extends Migration
+class CreateOgmInOutFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,15 @@ class CreateIngoingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ingoings', function (Blueprint $table) {
+        Schema::create('ogm_in_out_files', function (Blueprint $table) {
             $table->increments('id');
+            $table->date('date');
+            $table->string('to');
+            $table->string('from');
+            $table->string('name');
             $table->text('subject');
+            $table->boolean('letter');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +33,6 @@ class CreateIngoingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ingoings');
+        Schema::dropIfExists('ogm_in_out_files');
     }
 }
