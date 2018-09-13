@@ -9,6 +9,8 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        @yield('head')
+
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
 
@@ -19,7 +21,10 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+        @yield('css')
         <style>
             * {
                 font-family: 'Nunito', sans-serif !important;
@@ -34,5 +39,6 @@
         <div id="mainContainer" class="container p-0">
             @yield('content')
         </div>
+            @yield('js')
     </body>
 </html>

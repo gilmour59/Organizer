@@ -1,6 +1,4 @@
-@extends('layout.app')
 
-@section('content')
     <div class="text-center py-4">
         <h2>Organizer Test</h2>
     </div>
@@ -10,7 +8,8 @@
         </div>
         <div class="card-body">
             <div class="form-group">
-                <input id="search" name="search" class="form-control offset-3 col-sm-6" type="text" placeholder="Search Here">
+                <input class="form-control offset-3 col-sm-6" id="search" name="search" type="text" placeholder="Search Here" 
+                value="{{ request()->session()->get('search') }}" onkeyup="javascript:if(event.keyCode == 13) ajaxLoad('{{route('index')}}?search='+this.value)"/>
             </div>
             <div class="row">
                     <div class="col-sm-6 align-self-end" style="text-align:left;">
@@ -40,9 +39,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Ajax return -->
+                        @foreach ($ogmFiles as $row)
+                        <tr>
+                            <td class="align-middle">{{ $row->id }}</td>
+                            <td class="align-middle">{{ $row->date }}</td>
+                            <td class="align-middle">{{ $row->to }}</td>
+                            <td class="align-middle">{{ $row->from }}</td>
+                            <td class="align-middle">{{ $row->name }}</td>
+                            <td style="text-align:left">{{ $row->subject }}</td>
+                            <td class="align-middle"> <a style="font-size:12px" href=" '. route('search.view') .'" target="_blank" class="btn btn-success">View</a> </td>
+                            <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-primary">Download</a> </td>
+                            <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-info">Edit</a> </td>
+                            <td class="align-middle"> 
+                                <input type="hidden" name="_method" value="delete"/>
+                                <a style="font-size:12px" href="javascript:if(confirm('Are you sure want to delete?')) ajaxDelete('{{ route('destroy', ['id' => $row->id]) }}','{{csrf_token()}}')" class="btn btn-danger">X</a>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
+                <ul class="pagination">
+                    {{ $ogmFiles->links() }}
+                </ul>
             </div>
         </div>
     </div>
@@ -105,42 +123,8 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function(){
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            
-            fetch_data();
-            function fetch_data(query = ''){
-                $.ajax({
-                    url: "{{ route('search.action') }}",
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    dataType: 'json',
-                    success: function(data){
-                        $('tbody').html(data.table_data);
-                        $('#total_records').html(data.total_data);
-                    }
-                })
-            }
-            
-            $(document).on('keyup', '#search', function(){
-
-                var query = $(this).val();
-                fetch_data(query);
-            });
-        });
-    </script>
     <script>
         $('.custom-file-input').on('change',function(){
             $(this).next('.form-control-file').addClass("selected").html($(this).val());
         })
     </script>
-@endsection
