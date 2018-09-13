@@ -7,14 +7,24 @@ use App\ogmInOutFile;
 
 class PostsController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $request->session()->put('search', $request
+              ->has('search') ? $request->get('search') : ($request->session()
+              ->has('search') ? $request->session()->get('search') : ''));
+
+        $ogmFiles = new ogmInOutFile();
+        
+        $ogmFiles = $ogmFiles->where('subject', 'like', '%' . $request->session()->get('search') . '%')
+                ->orWhere('id', 'like', '%' . $request->session()->get('search') . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+
+        if($request->ajax()){
+            return view('index')->with('ogmFiles', $ogmFiles); 
+        }else{
+            return view('ajax')->with('ogmFiles', $ogmFiles);
+        }
     }
 
     /**
@@ -25,26 +35,28 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'addDate' => 'required',
             'addSubject' => 'required',
             'addFileUpload' => 'file|required'
         ]);
 
         //Create new Data 
-        $data = new ogmInOutFile();
-        $data->date = $request->input('addDate');
-        $data->to = $request->input('addTo');
-        $data->from = $request->input('addFrom');
-        $data->name = $request->input('addName');
-        $data->letter = $request->input('addLetter');
-        $data->save();
+        $ogmFiles = new ogmInOutFile();
+        $ogmFiles->date = $request->input('addDate');
+        $ogmFiles->to = $request->input('addTo');
+        $ogmFiles->from = $request->input('addFrom');
+        $ogmFiles->name = $request->input('addName');
+        $ogmFiles->letter = $request->input('addLetter');
+        $ogmFiles->save();
  
         //Handle File Upload
         if ($request->hasFile('addFileUpload')) {
+
             //get File Name
             $fileNameWithExtension = $request->file('addFileUpload')->getClientOriginalName();
-            $fileNameToStore = $data->id . '.' . $fileNameWithExtension;
+            $fileNameToStore = $ogmFiles->id . '.' . $fileNameWithExtension;
+
             //Upload Image (Store to a folder)
             //add if else for ingoing and out going
             $path = $request->file('addFileUpload')->storeAs('public/ingoing', $fileNameToStore);
@@ -52,22 +64,10 @@ class PostsController extends Controller
             $fileNameToStore = null;
         }
         
-        $data->file = $fileNameToStore;
-        $data->save();
+        $ogmFiles->file = $fileNameToStore;
+        $ogmFiles->save();
 
-        //Redirecting With Flashed Session Data
-        return redirect('/')->with('success', 'Post Added!'); 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        dd($ogmFiles);
     }
 
     /**
@@ -90,7 +90,35 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'addDate' => 'required',
+            'addSubject' => 'required',
+            'addFileUpload' => 'file'
+        ]);
 
+        //Find Data 
+        $ogmFiles = ogmInOutFile::find($id);
+        $ogmFiles->date = $request->input('addDate');
+        $ogmFiles->to = $request->input('addTo');
+        $ogmFiles->from = $request->input('addFrom');
+        $ogmFiles->name = $request->input('addName');
+        $ogmFiles->letter = $request->input('addLetter');
+        $ogmFiles->save();
+ 
+        //Handle File Upload
+        if ($request->hasFile('addFileUpload')) {
+
+            //get File Name
+            $fileNameWithExtension = $request->file('addFileUpload')->getClientOriginalName();
+            $fileNameToStore = $ogmFiles->id . '.' . $fileNameWithExtension;
+
+            //Upload Image (Store to a folder)
+            //add if else for ingoing and out going
+            $path = $request->file('addFileUpload')->storeAs('public/ingoing', $fileNameToStore);
+
+            $ogmFiles->file = $fileNameToStore;
+            $ogmFiles->save();
+        }
     }
 
     /**
@@ -101,6 +129,21 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ogmFiles = ogmInOutFile::find($id);
+        
+        if($ogmFiles->letter){
+            if($ogmFiles->file != null){
+                //Delete the file
+                Storage::delete('public/ingoing/' . $ogmFiles->file);
+            }
+        }else{
+            if($ogmFiles->file != null){
+                //Delete the file
+                Storage::delete('public/outgoing/' . $ogmFiles->file);
+            }
+        }
+        $ogmFiles->delete();
+
+        return redirect('/');
     }
 }

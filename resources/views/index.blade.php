@@ -1,6 +1,4 @@
-@extends('layout.app')
 
-@section('content')
     <div class="text-center py-4">
         <h2>Organizer Test</h2>
     </div>
@@ -9,8 +7,17 @@
             Search
         </div>
         <div class="card-body">
-            <div class="form-group">
-                <input id="search" name="search" class="form-control offset-3 col-sm-6" type="text" placeholder="Search Here">
+            <div class="input-group">
+                <button class="btn btn-outline-success offset-3" onclick="ajaxLoad('{{route('index')}}?search=')">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <input class="form-control col-sm-5" id="search" name="search" type="text" placeholder="Search Here" 
+                value="{{ request()->session()->get('search') }}" onkeydown="javascript:if(event.keyCode == 13){ajaxLoad('{{route('index')}}?search='+this.value)}"/>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-outline-primary" onclick="ajaxLoad('{{route('index')}}?search='+$('#search').val())">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
             <div class="row">
                     <div class="col-sm-6 align-self-end" style="text-align:left;">
@@ -40,9 +47,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Ajax return -->
+                        @foreach ($ogmFiles as $row)
+                        <tr>
+                            <td class="align-middle">{{ $row->id }}</td>
+                            <td class="align-middle">{{ $row->date }}</td>
+                            <td class="align-middle">{{ $row->to }}</td>
+                            <td class="align-middle">{{ $row->from }}</td>
+                            <td class="align-middle">{{ $row->name }}</td>
+                            <td style="text-align:left">{{ $row->subject }}</td>
+                            <td class="align-middle"> <a style="font-size:12px" href=" '. route('search.view') .'" target="_blank" class="btn btn-success">View</a> </td>
+                            <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-primary">Download</a> </td>
+                            <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-info">Edit</a> </td>
+                            <td class="align-middle"> 
+                                <input type="hidden" name="_method" value="delete"/>
+                                <a style="font-size:12px" href="javascript:if(confirm('Are you sure want to delete?')) ajaxDelete('{{ route('destroy', ['id' => $row->id]) }}','{{csrf_token()}}')" class="btn btn-danger">X</a>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
+                <ul class="pagination">
+                    {{ $ogmFiles->links() }}
+                </ul>
             </div>
         </div>
     </div>
@@ -59,7 +85,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <form id="addFileForm" method="POST" action="" enctype="multipart/form-data">
+                        <form id="addFileForm" method="POST" action="/store" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="addLetter">Select Type of Letter:</label>
@@ -100,67 +126,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" form="addFileForm" class="btn btn-primary">Save</button>
+                    <button type="submit" form="addFileForm" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function(){
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            
-            fetch_data();
-            function fetch_data(query = ''){
-                $.ajax({
-                    url: "{{ route('search.action') }}",
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    dataType: 'json',
-                    success: function(data){
-                        if(data.total_data > 0){
-
-                            var output = '';
-                            for(i in data.table_data.data){
-                                console.log(data.pagination)
-                                output += '<tr>' +
-                                        '<td class="align-middle">' + data.table_data.data[i].id + '</td>'+
-                                        '<td class="align-middle">' + data.table_data.data[i].date + '</td>'+
-                                        '<td class="align-middle">' + data.table_data.data[i].to + '</td>'+
-                                        '<td class="align-middle">' + data.table_data.data[i].from + '</td>'+
-                                        '<td class="align-middle">' + data.table_data.data[i].name + '</td>'+
-                                        '<td style="text-align:left">' + data.table_data.data[i].subject + '</td>'+
-                                        '<td class="align-middle"> <a style="font-size:12px" href="" target="_blank" class="btn btn-success">View</a> </td>'+
-                                        '<td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-primary">Download</a> </td>'+
-                                        '<td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-info">Edit</a> </td>'+
-                                        '<td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-danger">X</a> </td>'+
-                                        '</tr>' +
-                                        data.pagination;
-                            }
-                            $('tbody').html(output);
-                            $('#total_records').html(data.total_data);
-                        }
-                    }
-                })
-            }
-            
-            $(document).on('keyup', '#search', function(){
-
-                var query = $(this).val();
-                fetch_data(query);
-            });
-        });
-    </script>
     <script>
         $('.custom-file-input').on('change',function(){
             $(this).next('.form-control-file').addClass("selected").html($(this).val());
         })
     </script>
-@endsection
