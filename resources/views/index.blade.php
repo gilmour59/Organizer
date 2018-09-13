@@ -7,9 +7,17 @@
             Search
         </div>
         <div class="card-body">
-            <div class="form-group">
-                <input class="form-control offset-3 col-sm-6" id="search" name="search" type="text" placeholder="Search Here" 
-                value="{{ request()->session()->get('search') }}" onkeyup="javascript:if(event.keyCode == 13) ajaxLoad('{{route('index')}}?search='+this.value)"/>
+            <div class="input-group">
+                <button class="btn btn-outline-success offset-3" onclick="ajaxLoad('{{route('index')}}?search=')">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <input class="form-control col-sm-5" id="search" name="search" type="text" placeholder="Search Here" 
+                value="{{ request()->session()->get('search') }}" onkeydown="javascript:if(event.keyCode == 13){ajaxLoad('{{route('index')}}?search='+this.value)}"/>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-outline-primary" onclick="ajaxLoad('{{route('index')}}?search='+$('#search').val())">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
             <div class="row">
                     <div class="col-sm-6 align-self-end" style="text-align:left;">
@@ -77,7 +85,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <form id="addFileForm" method="POST" action="" enctype="multipart/form-data">
+                        <form id="addFileForm" method="POST" action="/store" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="addLetter">Select Type of Letter:</label>
@@ -118,7 +126,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" form="addFileForm" class="btn btn-primary">Save</button>
+                    <button type="submit" form="addFileForm" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

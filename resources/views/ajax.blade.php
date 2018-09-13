@@ -28,7 +28,7 @@
     @include('index')
   </div>
   <div class="loading">
-    <i class="fa fa-refresh fa-spin fa-2x fa-tw"></i>
+    <i class="fas fa-spinner fa-spin fa-5x"></i>
     <br>
     <span>Loading</span>
   </div>

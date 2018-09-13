@@ -17,11 +17,11 @@ class PostsController extends Controller
         
         $ogmFiles = $ogmFiles->where('subject', 'like', '%' . $request->session()->get('search') . '%')
                 ->orWhere('id', 'like', '%' . $request->session()->get('search') . '%')
-                ->orderBy('created_at', 'asc')
+                ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
         if($request->ajax()){
-            return view('index')->with('ogmFiles', $ogmFiles);
+            return view('index')->with('ogmFiles', $ogmFiles); 
         }else{
             return view('ajax')->with('ogmFiles', $ogmFiles);
         }
@@ -35,18 +35,11 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
+        $request->validate([
             'addDate' => 'required',
             'addSubject' => 'required',
             'addFileUpload' => 'file|required'
         ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'fail' =>true,
-                'errors' => $validator->errors()
-            ]);
-        }
 
         //Create new Data 
         $ogmFiles = new ogmInOutFile();
@@ -74,9 +67,7 @@ class PostsController extends Controller
         $ogmFiles->file = $fileNameToStore;
         $ogmFiles->save();
 
-        return response()->json([
-            'fail' => false
-        ]);
+        dd($ogmFiles);
     }
 
     /**
@@ -99,18 +90,11 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = $request->validate([
+        $request->validate([
             'addDate' => 'required',
             'addSubject' => 'required',
             'addFileUpload' => 'file'
         ]);
-
-        if ($validator->fails()){
-            return response()->json([
-                'fail' =>true,
-                'errors' => $validator->errors()
-            ]);
-        }
 
         //Find Data 
         $ogmFiles = ogmInOutFile::find($id);
@@ -135,10 +119,6 @@ class PostsController extends Controller
             $ogmFiles->file = $fileNameToStore;
             $ogmFiles->save();
         }
-
-        return response()->json([
-            'fail' => false
-        ]);
     }
 
     /**

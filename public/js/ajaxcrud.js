@@ -1,33 +1,28 @@
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $(document).on('click', 'a.page-link', function (event) {
         event.preventDefault();
         ajaxLoad($(this).attr('href'));
     });
 
-    $(document).on('submit', 'form#frm', function (event) {
+    $(document).on('submit', '#addFileForm', function (event) {
         event.preventDefault();
         var form = $(this);
         var data = new FormData($(this)[0]);
         var url = form.attr("action");
         $.ajax({
-            type: form.attr('method'),
+            type: 'POST',
             url: url,
             data: data,
             cache: false,
             contentType: false,
             processData: false,
-            success: function (data) {
-                $('.is-invalid').removeClass('is-invalid');
-                if (data.fail) {
-                    for (control in data.errors) {
-                        $('#' + control).addClass('is-invalid');
-                        $('#error-' + control).html(data.errors[control]);
-                    }
-                } else {
-                    ajaxLoad(data.redirect_url);
-                }
-            },
             error: function (xhr, textStatus, errorThrown) {
-                alert("Error: " + errorThrown);
+                alert("Errosr: " + errorThrown);
             }
         });
         return false;
@@ -37,7 +32,7 @@
         content = typeof content !== 'undefined' ? content : 'content';
         $('.loading').show();
         $.ajax({
-            type: "GET",
+            type: 'GET',
             url: filename,
             contentType: false,
             success: function (data) {
@@ -47,7 +42,10 @@
             error: function (xhr, status, error) {
                 alert(xhr.responseText);
             }
-        });
+        }).done(function() {
+            $('#search').focus();
+            moveCursorToEnd($('#search'));
+          });
     }
 
     function ajaxDelete(filename, token, content) {
@@ -65,4 +63,10 @@
                 alert(xhr.responseText);
             }
         });
+    }
+
+    function moveCursorToEnd(input) {
+        var originalValue = input.val();
+        input.val('');
+        input.blur().focus().val(originalValue);
     }
