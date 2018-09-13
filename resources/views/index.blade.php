@@ -125,8 +125,28 @@
                     },
                     dataType: 'json',
                     success: function(data){
-                        $('tbody').html(data.table_data);
-                        $('#total_records').html(data.total_data);
+                        if(data.total_data > 0){
+
+                            var output = '';
+                            for(i in data.table_data.data){
+                                console.log(data.pagination)
+                                output += '<tr>' +
+                                        '<td class="align-middle">' + data.table_data.data[i].id + '</td>'+
+                                        '<td class="align-middle">' + data.table_data.data[i].date + '</td>'+
+                                        '<td class="align-middle">' + data.table_data.data[i].to + '</td>'+
+                                        '<td class="align-middle">' + data.table_data.data[i].from + '</td>'+
+                                        '<td class="align-middle">' + data.table_data.data[i].name + '</td>'+
+                                        '<td style="text-align:left">' + data.table_data.data[i].subject + '</td>'+
+                                        '<td class="align-middle"> <a style="font-size:12px" href="" target="_blank" class="btn btn-success">View</a> </td>'+
+                                        '<td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-primary">Download</a> </td>'+
+                                        '<td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-info">Edit</a> </td>'+
+                                        '<td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-danger">X</a> </td>'+
+                                        '</tr>' +
+                                        data.pagination;
+                            }
+                            $('tbody').html(output);
+                            $('#total_records').html(data.total_data);
+                        }
                     }
                 })
             }
