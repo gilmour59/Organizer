@@ -16,9 +16,9 @@ class CreateOgmInOutFilesTable extends Migration
         Schema::create('ogm_in_out_files', function (Blueprint $table) {
             $table->increments('id');
             $table->date('date');
-            $table->string('to');
-            $table->string('from');
-            $table->string('name');
+            $table->string('to')->nullable();
+            $table->string('from')->nullable();
+            $table->string('name')->nullable();
             $table->text('subject');
             $table->boolean('letter');
             $table->string('file')->nullable();

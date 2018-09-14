@@ -7,23 +7,37 @@
             Search
         </div>
         <div class="card-body">
-            <div class="input-group">
-                <button class="btn btn-outline-success offset-3" onclick="ajaxLoad('{{route('index')}}?search=')">
-                    <i class="fas fa-redo"></i>
-                </button>
-                <input class="form-control col-sm-5" id="search" name="search" type="text" placeholder="Search Here" 
-                value="{{ request()->session()->get('search') }}" onkeydown="javascript:if(event.keyCode == 13){ajaxLoad('{{route('index')}}?search='+this.value)}"/>
-                <div class="input-group-btn">
-                    <button type="submit" class="btn btn-outline-primary" onclick="ajaxLoad('{{route('index')}}?search='+$('#search').val())">
-                        <i class="fas fa-search"></i>
-                    </button>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="addLetter">Type of Letter:</label>
+                        <select class="form-control col-6" id="letter" name="letter">
+                            <option value="1">Ingoing</option>
+                            <option value="0">Outgoing</option>
+                        </select>
+                    </div> 
+                </div>
+                <div class="col-sm-9 align-self-center">
+                    <div class="input-group">
+                        <button id="refreshFile" class="btn btn-outline-success offset-1" onclick="ajaxLoad('{{route('index')}}?search=')">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                        <input class="form-control col-sm-5" id="search" name="search" type="text" placeholder="Search Here" 
+                        value="{{ request()->session()->get('search') }}" onkeydown="javascript:if(event.keyCode == 13){ajaxLoad('{{route('index')}}?search='+this.value)}"/>
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-outline-primary" onclick="ajaxLoad('{{route('index')}}?search='+$('#search').val())">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
             <div class="row">
                     <div class="col-sm-6 align-self-end" style="text-align:left;">
                         <h6>Total Data: <span id="total_records"></span></h6>
                     </div>
-                    <div class="col-sm-6 pb-1"  style="text-align:right;">
+                    <div class="col-sm-6 pb-1 align-self-end"  style="text-align:right;">
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFile">
                             Add
@@ -34,12 +48,36 @@
                 <table class="table table-striped table-bordered text-center">
                     <thead>
                         <tr>
-                            <th width="1%">No.</th>
-                            <th width="15%">Date</th>
-                            <th width="15%">To</th>
-                            <th width="15%">From</th>
-                            <th width="15%">Name</th>
-                            <th width="30%">Subject</th>
+                            <th width="1%">
+                                <a href="javascript:ajaxLoad('{{url('/?field=id&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
+                                    No.{{request()->session()->get('field')=='id'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
+                                </a>
+                            </th>
+                            <th width="15%">
+                                <a href="javascript:ajaxLoad('{{url('/?field=date&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
+                                    Date{{request()->session()->get('field')=='date'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
+                                </a>
+                            </th>
+                            <th width="15%">
+                                <a href="javascript:ajaxLoad('{{url('/?field=to&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
+                                    To{{request()->session()->get('field')=='to'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
+                                </a>
+                            </th>
+                            <th width="15%">
+                                <a href="javascript:ajaxLoad('{{url('/?field=from&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
+                                    From{{request()->session()->get('field')=='from'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
+                                </a>
+                            </th>
+                            <th width="15%">
+                                <a href="javascript:ajaxLoad('{{url('/?field=name&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
+                                    Name{{request()->session()->get('field')=='name'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
+                                </a>
+                            </th>
+                            <th width="30%">
+                                <a href="javascript:ajaxLoad('{{url('/?field=subject&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
+                                    Subject{{request()->session()->get('field')=='subject'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
+                                </a>
+                            </th>
                             <th width="1%"></th>
                             <th width="1%"></th>
                             <th width="1%"></th>
@@ -55,8 +93,8 @@
                             <td class="align-middle">{{ $row->from }}</td>
                             <td class="align-middle">{{ $row->name }}</td>
                             <td style="text-align:left">{{ $row->subject }}</td>
-                            <td class="align-middle"> <a style="font-size:12px" href=" '. route('search.view') .'" target="_blank" class="btn btn-success">View</a> </td>
-                            <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-primary">Download</a> </td>
+                            <td class="align-middle"> <a style="font-size:12px" href="{{route('view', ['id' => $row->id])}}" target="_blank" class="btn btn-success">View</a> </td>
+                            <td class="align-middle"> <a style="font-size:12px" href="{{route('download', ['id' => $row->id])}}" class="btn btn-primary">Download</a> </td>
                             <td class="align-middle"> <a style="font-size:12px" href="" class="btn btn-info">Edit</a> </td>
                             <td class="align-middle"> 
                                 <input type="hidden" name="_method" value="delete"/>
@@ -86,17 +124,18 @@
                 <div class="modal-body">
                     <div class="container">
                         <form id="addFileForm" method="POST" action="/store" enctype="multipart/form-data">
-                            @csrf
+                        @csrf
                             <div class="form-group">
                                 <label for="addLetter">Select Type of Letter:</label>
                                 <select class="form-control" id="addLetter" name="addLetter">
-                                    <option value="0">Ingoing</option>
-                                    <option value="1">Outgoing</option>
+                                    <option value="1">Ingoing</option>
+                                    <option value="0">Outgoing</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addDate">Date Received:</label>
-                                <input class="form-control" type="date" name="addDate" id="addDate">
+                                <input class="form-control <?php $errors->has('addDate') ? "is-invalid": ""?>" type="date" name="addDate" id="addDate" autofocus>
+                                <span id="error-addDate" class="invalid-feedback"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addTo">To:</label>
@@ -112,21 +151,23 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addSubject">Subject:</label>
-                                <textarea name="addSubject" class="form-control" id="addSubject" cols="5" rows="3"></textarea>
+                                <textarea name="addSubject" class="form-control <?php $errors->has('addSubject') ? "is-invalid": ""?>" id="addSubject" cols="5" rows="3"></textarea>
+                                <span id="error-addSubject" class="invalid-feedback"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addFileUpload">Upload File: </label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="addFileUpload" name="addFileUpload">
+                                    <input type="file" class="custom-file-input <?php $errors->has('addFileUpload') ? "is-invalid": ""?>" id="addFileUpload" name="addFileUpload">
                                     <label class="custom-file-label form-control-file" for="addFileUpload">Choose file</label>
+                                    <span id="error-addFileUpload" class="invalid-feedback"></span>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" form="addFileForm" class="btn btn-primary">Save</button>
+                    <button id="closeAddFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="addFileForm" class="btn btn-primary" value="Submit">Save</button>
                 </div>
             </div>
         </div>

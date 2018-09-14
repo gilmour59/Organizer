@@ -31,3 +31,7 @@ Route::post('/store', 'PostsController@store')->name('store');
 Route::put('/update/{id}', 'PostsController@update')->name('update');
 
 Route::delete('destroy/{id}', 'PostsController@destroy')->name('destroy');
+
+Route::get('/view/{id}', 'PostsController@view')->name('view');
+
+Route::get('/download/{id}', 'PostsController@download')->name('download');
