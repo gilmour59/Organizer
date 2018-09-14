@@ -8,7 +8,7 @@
         </div>
         <div class="card-body">
             <div class="input-group">
-                <button class="btn btn-outline-success offset-3" onclick="ajaxLoad('{{route('index')}}?search=')">
+                <button id="refreshFile" class="btn btn-outline-success offset-3" onclick="ajaxLoad('{{route('index')}}?search=')">
                     <i class="fas fa-redo"></i>
                 </button>
                 <input class="form-control col-sm-5" id="search" name="search" type="text" placeholder="Search Here" 
@@ -86,7 +86,7 @@
                 <div class="modal-body">
                     <div class="container">
                         <form id="addFileForm" method="POST" action="/store" enctype="multipart/form-data">
-                            @csrf
+                        @csrf
                             <div class="form-group">
                                 <label for="addLetter">Select Type of Letter:</label>
                                 <select class="form-control" id="addLetter" name="addLetter">
@@ -96,7 +96,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addDate">Date Received:</label>
-                                <input class="form-control" type="date" name="addDate" id="addDate">
+                                <input class="form-control <?php $errors->has('addDate') ? "is-invalid": ""?>" type="date" name="addDate" id="addDate" autofocus>
+                                <span id="error-addDate" class="invalid-feedback"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addTo">To:</label>
@@ -112,21 +113,23 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addSubject">Subject:</label>
-                                <textarea name="addSubject" class="form-control" id="addSubject" cols="5" rows="3"></textarea>
+                                <textarea name="addSubject" class="form-control <?php $errors->has('addSubject') ? "is-invalid": ""?>" id="addSubject" cols="5" rows="3"></textarea>
+                                <span id="error-addSubject" class="invalid-feedback"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="addFileUpload">Upload File: </label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="addFileUpload" name="addFileUpload">
+                                    <input type="file" class="custom-file-input <?php $errors->has('addFileUpload') ? "is-invalid": ""?>" id="addFileUpload" name="addFileUpload">
                                     <label class="custom-file-label form-control-file" for="addFileUpload">Choose file</label>
+                                    <span id="error-addFileUpload" class="invalid-feedback"></span>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" form="addFileForm" class="btn btn-primary">Save</button>
+                    <button id="closeAddFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="addFileForm" class="btn btn-primary" value="Submit">Save</button>
                 </div>
             </div>
         </div>

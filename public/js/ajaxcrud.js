@@ -1,32 +1,47 @@
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
     $(document).on('click', 'a.page-link', function (event) {
         event.preventDefault();
         ajaxLoad($(this).attr('href'));
     });
 
-    $(document).on('submit', '#addFileForm', function (event) {
-        event.preventDefault();
+    $(document).off('submit').on('submit', '#addFileForm', function(event) {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         var form = $(this);
-        var data = new FormData($(this)[0]);
+        var data = new FormData(this);
         var url = form.attr("action");
+        var type = form.attr("method");
+
         $.ajax({
-            type: 'POST',
+            type: type,
             url: url,
             data: data,
             cache: false,
             contentType: false,
             processData: false,
             error: function (xhr, textStatus, errorThrown) {
-                alert("Errosr: " + errorThrown);
+                alert("Error: " + errorThrown);
+            },
+            success: function(data){
+                $('.is-invalid').removeClass('is-invalid');
+                if (data.fail) {
+                    for (control in data.errors) {
+                        $('#' + control).addClass('is-invalid');
+                        $('#error-' + control).html(data.errors[control]);
+                    }
+                } else {
+                    $('#closeAddFilebtn').trigger('click');
+                    $('#refreshFile').trigger('click');
+                    $("#addFileForm")[0].reset();
+                } 
             }
         });
         return false;
-    });
+    }); 
 
     function ajaxLoad(filename, content) {
         content = typeof content !== 'undefined' ? content : 'content';

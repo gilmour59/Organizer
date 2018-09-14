@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\ogmInOutFile;
 
@@ -20,11 +21,7 @@ class PostsController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
 
-        if($request->ajax()){
-            return view('index')->with('ogmFiles', $ogmFiles); 
-        }else{
             return view('ajax')->with('ogmFiles', $ogmFiles);
-        }
     }
 
     /**
@@ -35,11 +32,17 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'addDate' => 'required',
             'addSubject' => 'required',
             'addFileUpload' => 'file|required'
         ]);
+
+        if ($validator->fails())
+            return response()->json([
+            'fail' =>true,
+            'errors' => $validator->errors()
+            ]);
 
         //Create new Data 
         $ogmFiles = new ogmInOutFile();
@@ -47,6 +50,7 @@ class PostsController extends Controller
         $ogmFiles->to = $request->input('addTo');
         $ogmFiles->from = $request->input('addFrom');
         $ogmFiles->name = $request->input('addName');
+        $ogmFiles->subject = $request->input('addSubject');
         $ogmFiles->letter = $request->input('addLetter');
         $ogmFiles->save();
  
@@ -66,8 +70,10 @@ class PostsController extends Controller
         
         $ogmFiles->file = $fileNameToStore;
         $ogmFiles->save();
-
-        dd($ogmFiles);
+        
+        return response()->json([
+            'fail' => false
+        ]);
     }
 
     /**
@@ -90,7 +96,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'addDate' => 'required',
             'addSubject' => 'required',
             'addFileUpload' => 'file'
@@ -102,6 +108,7 @@ class PostsController extends Controller
         $ogmFiles->to = $request->input('addTo');
         $ogmFiles->from = $request->input('addFrom');
         $ogmFiles->name = $request->input('addName');
+        $ogmFiles->subject = $request->input('addSubject');
         $ogmFiles->letter = $request->input('addLetter');
         $ogmFiles->save();
  
