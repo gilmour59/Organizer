@@ -3,13 +3,8 @@
         ajaxLoad($(this).attr('href'));
     });
 
-    $(document).off('submit').on('submit', '#addFileForm', function(event) {
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+    $(document).on('submit', '#addFileForm', function(event) {
+        event.preventDefault();
 
         var form = $(this);
         var data = new FormData(this);
@@ -34,12 +29,12 @@
                         $('#error-' + control).html(data.errors[control]);
                     }
                 } else {
+                    $("#addFileForm")[0].reset();
                     $('#closeAddFilebtn').trigger('click');
                     $('#refreshFile').trigger('click');
-                    $("#addFileForm")[0].reset();
                 } 
             }
-        });
+        })
         return false;
     }); 
 
@@ -49,18 +44,14 @@
         $.ajax({
             type: 'GET',
             url: filename,
+            cache: false,
             contentType: false,
+            processData: false,
             success: function (data) {
                 $("#" + content).html(data);
                 $('.loading').hide();
-            },
-            error: function (xhr, status, error) {
-                alert(xhr.responseText);
             }
-        }).done(function() {
-            $('#search').focus();
-            moveCursorToEnd($('#search'));
-          });
+        })
     }
 
     function ajaxDelete(filename, token, content) {
@@ -79,7 +70,6 @@
             }
         });
     }
-
     function moveCursorToEnd(input) {
         var originalValue = input.val();
         input.val('');
