@@ -31,6 +31,9 @@ class PostsController extends Controller
                 ->paginate(10);
 
             //dd($request->session()->get('sort'));
+            if($request->ajax()){
+                return view('index')->with('ogmFiles', $ogmFiles);
+            }
             return view('ajax')->with('ogmFiles', $ogmFiles);
     }
 
