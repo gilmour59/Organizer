@@ -34,7 +34,9 @@ class PostsController extends Controller
             if($request->ajax()){
                 return view('index')->with('ogmFiles', $ogmFiles);
             }
-            return view('ajax')->with('ogmFiles', $ogmFiles);
+            $test = 'testaaa';
+
+            return view('ajax')->with('ogmFiles', $ogmFiles)->with('test', $test);
     }
 
     /**

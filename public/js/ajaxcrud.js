@@ -38,6 +38,7 @@
         return false;
     }); 
 
+    //THIS GETS THE WEBPAGE AND SENDS IT TO 'ajax.blade.php' (dataType: html)
     function ajaxLoad(filename, content) {
         content = typeof content !== 'undefined' ? content : 'content';
         $('.loading').show();
