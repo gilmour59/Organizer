@@ -29,9 +29,14 @@
                         $('#error-' + control).html(data.errors[control]);
                     }
                 } else {
+                    $('#addFile').modal('hide');
                     $("#addFileForm")[0].reset();
-                    $('#closeAddFilebtn').trigger('click');
-                    $('#refreshFile').trigger('click');
+                    
+                    //Modal Bug Fix
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+
+                    ajaxLoad(data.redirect_url);
                 } 
             }
         })

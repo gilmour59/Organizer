@@ -92,7 +92,8 @@ class PostsController extends Controller
         $ogmFiles->save();
         
         return response()->json([
-            'fail' => false
+            'fail' => false,
+            'redirect_url' => route('index')
         ]);
     }
 
