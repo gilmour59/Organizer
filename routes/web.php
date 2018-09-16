@@ -28,6 +28,8 @@ Route::get('/', 'PostsController@index')->name('index');
 
 Route::post('/store', 'PostsController@store')->name('store');
 
+Route::get('/get/{id}', 'PostsController@edit')->name('edit');
+
 Route::put('/update/{id}', 'PostsController@update')->name('update');
 
 Route::delete('destroy/{id}', 'PostsController@destroy')->name('destroy');

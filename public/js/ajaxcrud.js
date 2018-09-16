@@ -36,6 +36,7 @@
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
 
+                    console.log(data.redirect_url);
                     ajaxLoad(data.redirect_url);
                 } 
             }
@@ -70,12 +71,35 @@
             success: function (data) {
                 $("#" + content).html(data);
                 $('.loading').hide();
+                console.log(data.test);
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText);
             }
         });
     }
+
+    function ajaxEdit(filename) {
+        $('.loading').show();
+        $.ajax({
+            type: 'GET',
+            url: filename,
+            success: function (data) {
+                console.log(data.data.date);
+                $('#editDate').val(data.data.date);
+                $('#editTo').val(data.data.to);
+                $('#editFrom').val(data.data.from);
+                $('#editName').val(data.data.name);
+                $('#editSubject').val(data.data.subject);
+                $('#editLetter').val(data.data.letter);
+                $('.loading').hide()
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+    
     function moveCursorToEnd(input) {
         var originalValue = input.val();
         input.val('');

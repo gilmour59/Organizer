@@ -105,7 +105,12 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ogmFiles = ogmInOutFile::find($id);
+
+        return response()->json([
+            'data' => $ogmFiles,
+            'redirect_url' => route('index')
+        ]);
     }
 
     /**
