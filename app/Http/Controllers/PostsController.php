@@ -134,7 +134,17 @@ class PostsController extends Controller
         $ogmFiles->from = $request->input('editFrom');
         $ogmFiles->name = $request->input('editName');
         $ogmFiles->subject = $request->input('editSubject');
+
+        if($ogmFiles->letter != $request->input('editLetter')){
+            if($request->input('editLetter')){
+                Storage::move('public/outgoing/' . $ogmFiles->file, 'public/ingoing/' . $ogmFiles->file);
+            }else{
+                Storage::move('public/ingoing/' . $ogmFiles->file, 'public/outgoing/' . $ogmFiles->file);
+            }
+        }
+
         $ogmFiles->letter = $request->input('editLetter');
+
         $ogmFiles->save();
  
         //Handle File Upload
@@ -146,9 +156,13 @@ class PostsController extends Controller
 
             //Upload Image (Store to a folder)
             //edit if else for ingoing and out going
+
+            
             if($ogmFiles->letter){
+                Storage::delete('public/ingoing/' . $ogmFiles->file);
                 $path = $request->file('editFileUpload')->storeAs('public/ingoing', $fileNameToStore);
             }else{
+                Storage::delete('public/outgoing/' . $ogmFiles->file);
                 $path = $request->file('editFileUpload')->storeAs('public/outgoing', $fileNameToStore);
             }
 
