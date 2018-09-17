@@ -108,8 +108,7 @@ class PostsController extends Controller
         $ogmFiles = ogmInOutFile::find($id);
 
         return response()->json([
-            'data' => $ogmFiles,
-            'redirect_url' => route('index')
+            'data' => $ogmFiles
         ]);
     }
 
@@ -123,34 +122,34 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'addDate' => 'required',
-            'addSubject' => 'required',
-            'addFileUpload' => 'file'
+            'editDate' => 'required',
+            'editSubject' => 'required',
+            'editFileUpload' => 'file'
         ]);
 
         //Find Data 
         $ogmFiles = ogmInOutFile::find($id);
-        $ogmFiles->date = $request->input('addDate');
-        $ogmFiles->to = $request->input('addTo');
-        $ogmFiles->from = $request->input('addFrom');
-        $ogmFiles->name = $request->input('addName');
-        $ogmFiles->subject = $request->input('addSubject');
-        $ogmFiles->letter = $request->input('addLetter');
+        $ogmFiles->date = $request->input('editDate');
+        $ogmFiles->to = $request->input('editTo');
+        $ogmFiles->from = $request->input('editFrom');
+        $ogmFiles->name = $request->input('editName');
+        $ogmFiles->subject = $request->input('editSubject');
+        $ogmFiles->letter = $request->input('editLetter');
         $ogmFiles->save();
  
         //Handle File Upload
-        if ($request->hasFile('addFileUpload')) {
+        if ($request->hasFile('editFileUpload')) {
 
             //get File Name
-            $fileNameWithExtension = $request->file('addFileUpload')->getClientOriginalName();
+            $fileNameWithExtension = $request->file('editFileUpload')->getClientOriginalName();
             $fileNameToStore = $ogmFiles->id . '' . $fileNameWithExtension;
 
             //Upload Image (Store to a folder)
-            //add if else for ingoing and out going
+            //edit if else for ingoing and out going
             if($ogmFiles->letter){
-                $path = $request->file('addFileUpload')->storeAs('public/ingoing', $fileNameToStore);
+                $path = $request->file('editFileUpload')->storeAs('public/ingoing', $fileNameToStore);
             }else{
-                $path = $request->file('addFileUpload')->storeAs('public/outgoing', $fileNameToStore);
+                $path = $request->file('editFileUpload')->storeAs('public/outgoing', $fileNameToStore);
             }
 
             $ogmFiles->file = $fileNameToStore;

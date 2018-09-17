@@ -57,6 +57,7 @@
                             <a href="javascript:ajaxLoad('{{url('/?field=date&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
                                 Date{{request()->session()->get('field')=='date'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
                             </a>
+                            <small class="d-block">yyyy/mm/dd</small>
                         </th>
                         <th width="15%">
                             <a href="javascript:ajaxLoad('{{url('/?field=to&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
@@ -185,7 +186,7 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <form id="editFileForm" method="POST" action="/store" enctype="multipart/form-data">
+                    <form id="editFileForm" method="POST" action="" enctype="multipart/form-data">
                     @csrf
                         <div class="form-group">
                             <label for="editLetter">Select Type of Letter:</label>
@@ -224,12 +225,13 @@
                                 <span id="error-editFileUpload" class="invalid-feedback"></span>
                             </div>
                         </div>
+                        <input type="hidden" name="_method" value="PUT">
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="closeAddFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" form="addFileForm" class="btn btn-primary" value="Submit">Save</button>
+                <button id="closEditFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="editFileForm" class="btn btn-primary" value="Submit">Save</button>
             </div>
         </div>
     </div>
