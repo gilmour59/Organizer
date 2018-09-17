@@ -9,8 +9,17 @@ use App\ogmInOutFile;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Request $request)
     {
+        $request->session()->put('type', $request
+                ->has('type') ? $request->get('type') : ($request->session()
+                ->has('type') ? $request->session()->get('type') : 1));
+
         $request->session()->put('search', $request
                 ->has('search') ? $request->get('search') : ($request->session()
                 ->has('search') ? $request->session()->get('search') : ''));
@@ -25,18 +34,26 @@ class PostsController extends Controller
 
         $ogmFiles = new ogmInOutFile();
         
-        $ogmFiles = $ogmFiles->where('subject', 'like', '%' . $request->session()->get('search') . '%')
-                ->orWhere('id', 'like', '%' . $request->session()->get('search') . '%')
-                ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
-                ->paginate(10);
+        $ogmFiles = $ogmFiles
+            ->where('letter', '=', $request->session()->get('type'))
+            ->where(function ($query) use ($request){
+                $query
+                    ->where('subject', 'like', '%' . $request->session()->get('search') . '%')
+                    ->orWhere('id', 'like', '%' . $request->session()->get('search') . '%');
+            })
+            ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+            ->paginate(10);
 
+            //dd($ogmFiles);
             //dd($request->session()->get('sort'));
-            if($request->ajax()){
-                return view('index')->with('ogmFiles', $ogmFiles);
-            }
-            $test = 'testaaa';
 
-            return view('ajax')->with('ogmFiles', $ogmFiles)->with('test', $test);
+            $type = $request->session()->get('type');
+
+            if($request->ajax()){
+                return view('index')->with('ogmFiles', $ogmFiles)->with('type', $type);
+            }
+
+            return view('ajax')->with('ogmFiles', $ogmFiles)->with('type', $type);
     }
 
     /**
@@ -127,6 +144,13 @@ class PostsController extends Controller
             'editFileUpload' => 'file'
         ]);
 
+        if ($validator->fails())
+            return response()->json([
+                'fail' =>true,
+                'errors' => $validator->errors()
+            ]);
+
+
         //Find Data 
         $ogmFiles = ogmInOutFile::find($id);
         $ogmFiles->date = $request->input('editDate');
@@ -169,6 +193,11 @@ class PostsController extends Controller
             $ogmFiles->file = $fileNameToStore;
             $ogmFiles->save();
         }
+
+        return response()->json([
+            'fail' => false,
+            'redirect_url' => route('index')
+        ]);
     }
 
     /**

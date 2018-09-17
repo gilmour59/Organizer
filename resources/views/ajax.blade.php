@@ -24,7 +24,6 @@
 @endsection
 
 @section('content')
-  {{$test}}
   <div id="content"> <!-- THIS GETS PASSED IN THE 'js/ajaxcrud.js' (ajaxLoad function) -->
     @include('index')
   </div>

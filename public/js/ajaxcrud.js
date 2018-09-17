@@ -77,7 +77,7 @@
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
 
-                    console.log(data.redirect_url);
+                    console.log(data);
                     ajaxLoad(data.redirect_url);
                 } 
             }

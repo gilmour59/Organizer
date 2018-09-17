@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
-                    <label for="addLetter">Type of Letter:</label>
+                    <label for="letter">Type of Letter:</label>
                     <select class="form-control col-6" id="letter" name="letter">
                         <option value="1">Ingoing</option>
                         <option value="0">Outgoing</option>
@@ -116,4 +116,23 @@
     $('.custom-file-input').on('change',function(){
         $(this).next('.form-control-file').addClass("selected").html($(this).val());
     })
+
+    var letterType = {{$type}};
+
+    $(document).ready(function(){
+        if(letterType){
+            $('#letter').val(1);
+        }else{
+            $('#letter').val(0);
+        }
+    });
+
+    $('#letter').change(function() {
+        if ($(this).val() == '1') { 
+            ajaxLoad('{{route('index')}}?type=1');
+        }
+        if ($(this).val() == '0') { 
+            ajaxLoad('{{route('index')}}?type=0');
+        }
+    });
 </script>
