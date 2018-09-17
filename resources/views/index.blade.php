@@ -1,7 +1,4 @@
 
-<div class="text-center py-4">
-    <h2>Organizer Test</h2>
-</div>
 <div class="card mx-auto" style="width: 1150px;">
     <div class="card-header font-weight-bold">
         Search

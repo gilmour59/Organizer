@@ -37,3 +37,7 @@ Route::delete('destroy/{id}', 'PostsController@destroy')->name('destroy');
 Route::get('/view/{id}', 'PostsController@view')->name('view');
 
 Route::get('/download/{id}', 'PostsController@download')->name('download');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
