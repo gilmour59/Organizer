@@ -11,7 +11,7 @@ class PostsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web'); //$this->middleware('auth');
     }
 
     public function index(Request $request)

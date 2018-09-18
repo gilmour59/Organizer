@@ -1,5 +1,3 @@
-ADD
+added code to Exceptions/Handler.php
 
-- select in and out files 
-
-- Separate Modal mess to another php files
+added code to Http/RedirectIfAuthenticated.php
