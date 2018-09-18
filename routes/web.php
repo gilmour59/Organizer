@@ -41,3 +41,9 @@ Route::get('/download/{id}', 'PostsController@download')->name('download');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/admin', 'AdminController@index')->name('admin');
+
+Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+
+Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
