@@ -67,7 +67,7 @@ class PostsController extends Controller
         $validator = Validator::make($request->all(), [
             'addDate' => 'required',
             'addSubject' => 'required',
-            'addFileUpload' => 'file|required'
+            'addFileUpload' => 'file|required|mimes:pdf'
         ]);
 
         if ($validator->fails())
@@ -141,7 +141,7 @@ class PostsController extends Controller
         $validator = Validator::make($request->all(), [
             'editDate' => 'required',
             'editSubject' => 'required',
-            'editFileUpload' => 'file'
+            'editFileUpload' => 'file|mimes:pdf'
         ]);
 
         if ($validator->fails())
